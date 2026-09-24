@@ -28,7 +28,15 @@ const getPostById = async (req, res, next) => {
 
 const createPost = async (req, res, next) => {
     try {
-        const post = await postService.createPost(req.body);
+        const postData = {
+            imageUrl: `/uploads/${req.file.filename}`,
+            caption: req.body.caption,
+        };
+
+        console.log("Uploaded file:", req.file);
+        console.log("Post data:", postData);
+
+        const post = await postService.createPost(postData);
 
         res.status(201).json({
             success: true,
