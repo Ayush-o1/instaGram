@@ -1,9 +1,15 @@
 const express = require("express");
 
+const postRoutes = require("./routes/postRoutes");
+
 const app = express();
 
-app.get("/",(req,res)=>{
-    res.send("Instagram Backend is running ! ✅");
+app.use(express.json());
+
+app.get("/", (req, res) => {
+    res.send("Instagram Backend is running! ✅");
 });
+
+app.use("/api/posts", postRoutes);
 
 module.exports = app;
