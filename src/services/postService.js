@@ -12,8 +12,13 @@ const createPost = async (postData) => {
     return await Post.create(postData);
 };
 
+const deletePost = async (postId) => {
+    return await Post.findByIdAndDelete(postId);
+};
+
 module.exports = {
     getAllPosts,
     getPostById,
     createPost,
+    deletePost,
 };

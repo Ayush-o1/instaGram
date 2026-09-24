@@ -11,4 +11,6 @@ router.get("/:id", postController.getPostById);
 
 router.post("/",upload.single("image"),postController.createPost);
 
+router.delete("/:id",postController.deletePost);
+
 module.exports = router;

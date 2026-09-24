@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 const postService = require("../services/postService");
 
 const getAllPosts = async (req, res, next) => {
@@ -33,9 +36,6 @@ const createPost = async (req, res, next) => {
             caption: req.body.caption,
         };
 
-        console.log("Uploaded file:", req.file);
-        console.log("Post data:", postData);
-
         const post = await postService.createPost(postData);
 
         res.status(201).json({
@@ -47,8 +47,42 @@ const createPost = async (req, res, next) => {
     }
 };
 
+const deletePost = async (req, res, next) => {
+    try {
+        const deletedPost = await postService.deletePost(req.params.id);
+
+        if (!deletedPost) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found",
+            });
+        }
+
+        const imagePath = path.join(
+            __dirname,
+            "../../",
+            deletedPost.imageUrl
+        );
+
+        fs.unlink(imagePath, (error) => {
+            if (error) {
+                console.error("Failed to delete image:", error.message);
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "Post deleted successfully",
+            data: deletedPost,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAllPosts,
     getPostById,
     createPost,
+    deletePost,
 };
