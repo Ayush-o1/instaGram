@@ -31,6 +31,18 @@ const getPostById = async (req, res, next) => {
 
 const createPost = async (req, res, next) => {
     try {
+        if (!req.file){
+            return res.status(400).json({
+                success:false,
+                message:"Image is required",
+            });
+        }
+        if (!req.body.caption || req.body.caption.trim() === "") {
+            return res.status(400).json({
+                success: false,
+                message: "Caption is required",
+    });
+}
         const postData = {
             imageUrl: `/uploads/${req.file.filename}`,
             caption: req.body.caption,
