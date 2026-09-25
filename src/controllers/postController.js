@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const mongoose = require("mongoose");
 
 const postService = require("../services/postService");
 
@@ -18,6 +19,12 @@ const getAllPosts = async (req, res, next) => {
 
 const getPostById = async (req, res, next) => {
     try {
+        if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid post ID",
+            })
+        }
         const post = await postService.getPostById(req.params.id);
 
         res.status(200).json({
@@ -38,11 +45,27 @@ const createPost = async (req, res, next) => {
             });
         }
         if (!req.body.caption || req.body.caption.trim() === "") {
+            fs.unlink(req.path, (error) => {
+                if(error){
+                    console.error("Failed to delete uploaded image: ",error.message);
+                }
+            });
             return res.status(400).json({
                 success: false,
                 message: "Caption is required",
     });
 }
+    if(req.body.caption.trim().length > 500){
+        fs.unlink(req.file.path, (error) => {
+            if(error){
+                console.error("Failed to delete uploaded image: ",error.message);
+            }
+        });
+        return res.status(400).json({
+            success: false,
+            message: "Caption cannot exceed 500 characters",
+        });
+    }
         const postData = {
             imageUrl: `/uploads/${req.file.filename}`,
             caption: req.body.caption,
@@ -61,6 +84,12 @@ const createPost = async (req, res, next) => {
 
 const deletePost = async (req, res, next) => {
     try {
+        if(!mongoose.Types.ObjectId.isValid(req.params.id)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid post ID",
+            });
+        }
         const deletedPost = await postService.deletePost(req.params.id);
 
         if (!deletedPost) {

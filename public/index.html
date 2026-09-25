@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Instagram</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="navbar-content">
+            <h1>Instagram</h1>
+        </div>
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Create Post -->
+        <section class="create-post">
+
+            <h2>Create Post</h2>
+
+            <form id="postForm">
+
+                <div class="form-group">
+                    <label for="image">Choose Image</label>
+
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/jpeg,image/png,image/webp"
+                        required
+                    >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="caption">Caption</label>
+
+                    <textarea
+                        id="caption"
+                        name="caption"
+                        placeholder="Write a caption..."
+                        maxlength="500"
+                        required
+                    ></textarea>
+                </div>
+
+
+                <button type="submit" id="uploadButton">
+                    Upload Post
+                </button>
+
+            </form>
+
+            <p id="message"></p>
+
+        </section>
+
+
+        <!-- Feed -->
+        <section class="feed">
+
+            <h2>Feed</h2>
+
+            <div id="postsContainer">
+                <!-- Posts will be added by JavaScript -->
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
